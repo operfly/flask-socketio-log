@@ -8,7 +8,7 @@ import socket
 import threading
 import paramiko
 import pymysql
-db = pymysql.connect(host='10.8.1.2', port=3306, user='username', passwd='Gs123*456', db='userauth', charset='utf8')
+db = pymysql.connect(host=' ', port= , user=' ', passwd=' ', db=' ', charset='utf8')
 
 
 def get_ssh(ip, port,user, pwd):
