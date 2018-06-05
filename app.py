@@ -13,20 +13,8 @@ app.config['MYSQL_DATABASE_PASSWORD'] = ''
 app.config['MYSQL_DATABASE_DB'] = ''
 app.config['MYSQL_DATABASE_HOST'] = '10.8.1.2'
 mysql.init_app(app)
-Session(app)
 async_mode = None
-socketio = SocketIO(app, async_mode=async_mode)
 
-
-def get_ssh(ip, post,user, pwd):
-    try:
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh.connect(ip, post, user, pwd, timeout=15)
-        return ssh
-    except Exception, e:
-        print e
-        return "False"
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -36,21 +24,6 @@ def index():
     cursor.execute("select host from hostauthon".format('Red'))
     hostdata = [dict(item=row[0]) for row in cursor.fetchall()]
     return (render_template('index.html', hostjsonStr=hostdata))
-
-
-def numsort(obj):
-    print obj
-#    tmp=number.split(' *')
-    tmp = re.split("\s+", obj)
-    print tmp
-    for i in range(len(tmp)):
-        tmp[i] = int(tmp[i])
-    print tmp
-    tmp.sort()
-    res = ""
-    for i in tmp:
-        res += (str(i) + " ")
-    return res
 
 
 @app.route('/app/hostname', methods=['POST'])
@@ -85,16 +58,6 @@ def selcity(host):
     print ('----发送的应用列表--%s---------' % results)
 
     return results
-
-@app.route('/app/logname', methods=['GET','POST'])
-def requestlogname():
-    if request.method == 'POST':
-        logrev = request.get_json()['loglist']
-        lognameresult = selcity(logrev)
-        print ('--/app/logname--返回的应用名称--%s------' % lognameresult)
-        return lognameresult
-    else:
-        return 'Data  is not post woring'
 
 
 
