@@ -1,9 +1,6 @@
 # coding=utf-8
 import json
-import paramiko
 from flask import Flask, render_template, redirect, request, session
-from flask_session import Session
-from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 from flaskext.mysql import MySQL
 
 
@@ -100,20 +97,6 @@ def requestlogname():
         return 'Data  is not post woring'
 
 
-#@socketio.on('connect', namespace='/log')
-def dojob(host,lognameresult):
-    cursor =  mysql.get_db().cursor()                      
-    sql="select hostname,port,user,password from hostauthon where host='"+host+"'"
-    cursor.execute(sql)
-    sqlconmmand = cursor.fetchone()
-    for row in sqlconmmand:
-        ip = row[0]
-        port = row[1]
-        user = row[2]
-        password = row[3]
-    return "ip=%s,port=%s,user=%s,pwd=%s" % \
-             (ip, port, user, password)
-
 
 if __name__ == '__main__':
-    socketio.run(app,debug=True)
+    app.run(app,debug=True)
