@@ -106,22 +106,10 @@ def dojob(conn, address, thread_name):
     handshake(conn, address, thread_name)     # 握手
     mess = recv_data(conn)
     jsonMess = json.loads(mess)
-    print ("-------反馈数据--%s------" % jsonMess)
     deploy_host = jsonMess['host']
     app_name =  jsonMess['appname']
-    print ('-----deploy_host------%s--------' % deploy_host)
-    print ('-----app_name---------%s--------' % app_name)
 
 
-    #try:
-    #    log_path = ('/home/webService/log/%s/%s-info.log' % app_name)
-    #    print log_path
-    #except Exception as e:
-    #    send_data(conn,str(e))
-    #    conn.close()
-    #    print "Error:" + str(e)
-    #    print ('%s : Socket close with %s:%s' % (thread_name, address[0], address[1]))
-    #    return
 
     try:
         cursor = db.cursor()
@@ -136,7 +124,6 @@ def dojob(conn, address, thread_name):
 
         print "ip=%s,port=%s,user=%s,pwd=%s" % \
              (ip, port, user, pwd)
-        #auth_ = modes.HostAccount.objects.get(host = deploy_host)
 
     except Exception as e:
         send_data(conn,str(e))
@@ -144,8 +131,7 @@ def dojob(conn, address, thread_name):
         print "Error:" + str(e)
         print ('%s : Socket close with %s:%s' % (thread_name, address[0], address[1]))
         return
-    #user = auth_.username
-    #pwd = auth_.pwd    
+ 
     conn.setblocking(0)                       # 设置socket为非阻塞
 
     ssh = get_ssh(ip, port,user, pwd)  # 连接远程服务器
