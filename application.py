@@ -144,6 +144,7 @@ def dojob(conn, address, thread_name):
         clientdata = recv_data(conn)
         if clientdata is not None and 'quit' in clientdata:    # 但浏览器点击stop按钮或close按钮时，断开连接
             print ('%s : Socket close with %s:%s' % (thread_name, address[0], address[1]))
+            chan.send(chr(3))
             send_data(conn, 'close connect')
             conn.close()
             break
@@ -153,6 +154,7 @@ def dojob(conn, address, thread_name):
                 if clientdata1 is not None and 'quit' in clientdata1:
                     print ('%s : Socket close with %s:%s' % (thread_name, address[0], address[1]))
                     send_data(conn, 'close connect')
+                    chan.send(chr(3))
                     conn.close()
                     break
                 log_msg = chan.recv(10000).strip()    # 接收日志信息
@@ -164,6 +166,7 @@ def dojob(conn, address, thread_name):
             if clientdata2 is not None and 'quit' in clientdata2:
                 print ('%s : Socket close with %s:%s' % (thread_name, address[0], address[1]))
                 send_data(conn, 'close connect')
+                chan.send(chr(3))
                 conn.close()
                 break
         break
